@@ -2,7 +2,7 @@
 	<div class="cl-link">
 		<a v-for="item in urls" :key="item" class="cl-link__item" :href="item" :target="target">
 			<el-icon><icon-link /></el-icon>
-			<span>{{ text || filename(item) }}</span>
+			<span>{{ text || filename(item, oss) }}</span>
 		</a>
 	</div>
 </template>
@@ -26,6 +26,10 @@ export default defineComponent({
 		target: {
 			type: String,
 			default: "_blank"
+		},
+		oss: {
+			type: Boolean,
+			default: false
 		}
 	},
 
@@ -44,7 +48,8 @@ export default defineComponent({
 			return [];
 		});
 
-		function filename(url: string) {
+		function filename(url: string, oss: boolean) {
+			if (oss) return decodeURIComponent(url.replace(/.+?_/, ""));
 			return last(url.split("/"));
 		}
 
